@@ -6,22 +6,13 @@ const commentSchema = new mongoose.Schema({
         ref: 'blog',
         required: true
     },
-    postedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    name: { type: String, required: true },
     content: { type: String, required: true },
     isApproved: { type: Boolean, default: false }
 }, {
     timestamps: true,
     strictPopulate: false
 });
-
-// Prevent model overwrite upon recompilation
-if (mongoose.models.Comment) {
-    delete mongoose.models.Comment;
-}
 
 const Comment = mongoose.model('Comment', commentSchema);
 export default Comment;
