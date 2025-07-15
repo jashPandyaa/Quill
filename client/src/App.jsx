@@ -7,7 +7,7 @@ import DashBoard from './pages/admin/DashBoard';
 import AddBlog from './pages/admin/AddBlog';
 import ListBlog from './pages/admin/ListBlog';
 import Comments from './pages/admin/Comments';
-import Login from './components/Login';
+import Login from './components/Login.jsx';
 import Register from './components/Register';
 import Dashboard from './pages/Dashboard';
 import UserAddBlog from './pages/UserAddBlog';
