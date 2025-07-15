@@ -10,23 +10,17 @@ import toast from 'react-hot-toast';
 
 const Blog = () => {
     const { id } = useParams();
-    const { axios, user, token } = useAppContext();
+    const { axios } = useAppContext();
     const [data, setData] = useState(null);
     const [comments, setComments] = useState([]);
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
-    const [likeCount, setLikeCount] = useState(0);
-    const [isLiked, setIsLiked] = useState(false);
 
     const fetchBlogData = async () => {
         try {
             const { data } = await axios.get(`/api/blog/${id}`);
             if (data.success) {
                 setData(data.blog);
-                setLikeCount(data.blog.likes?.length || 0);
-                if (user) {
-                    setIsLiked(data.blog.likes?.includes(user._id) || false);
-                }
             } else {
                 toast.error(data.message);
             }
@@ -37,7 +31,7 @@ const Blog = () => {
 
     const fetchComments = async () => {
         try {
-            const { data } = await axios.post('/api/blog/comments', { blogId: id });
+            const { data } = await axios.get(`/api/blog/${id}/comments`);
             if (data.success) {
                 setComments(data.comments);
             } else {
@@ -50,15 +44,21 @@ const Blog = () => {
 
     const addComment = async (e) => {
         e.preventDefault();
-        if (!token) {
-            toast.error('Please login to add comments');
+        if (!name || !content) {
+            toast.error('Please enter your name and comment');
             return;
         }
 
         try {
-            const { data } = await axios.post('/api/blog/add-comment', { blog: id, name: user.name, content });
+            const { data } = await axios.post('/api/blog/add-comment', { 
+                blog: id, 
+                name, 
+                content 
+            });
+            
             if (data.success) {
-                toast.success(data.message);
+                toast.success('Comment added successfully');
+                setName('');
                 setContent('');
                 fetchComments();
             } else {
@@ -66,23 +66,6 @@ const Blog = () => {
             }
         } catch (error) {
             toast.error(error.message);
-        }
-    };
-
-    const handleLike = async () => {
-        if (!token) {
-            toast.error('Please login to like blogs');
-            return;
-        }
-
-        try {
-            const { data } = await axios.post(`/api/blog/${id}/like`);
-            if (data.success) {
-                setLikeCount(data.likesCount);
-                setIsLiked(!isLiked);
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to like blog");
         }
     };
 
@@ -95,7 +78,7 @@ const Blog = () => {
 
     return (
         <div className='relative'>
-            <img src={assets.gradientBackground} alt="background color" className='absolute -top-50 -z-1 opacity-50' />
+            <img src={assets.gradientBackground} alt="background" className='absolute -top-50 -z-1 opacity-50' />
             <Navbar />
 
             <div className='text-center mt-20 text-gray-600'>
@@ -105,64 +88,79 @@ const Blog = () => {
                 <h1 className='text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800'>
                     {data.title}
                 </h1>
-                <h2 className='my-5 max-w-lg truncate mx-auto'>{data.title}</h2>
                 <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>
                     Admin
                 </p>
             </div>
 
-            {/* Blog Main Content */}
             <div className='mx-5 max-w-5xl md:mx-auto my-10 mt-6'>
-                <img src={data.image} alt="" className='rounded-3xl mb-5' />
+                <img src={data.image} alt="" className='rounded-3xl mb-5 w-full h-auto max-h-96 object-cover' />
                 
                 <div className='rich-text max-w-3xl mx-auto' dangerouslySetInnerHTML={{ __html: data.description }}></div>
 
                 {/* Comments Section */}
                 <div className='mt-14 mb-10 max-w-3xl mx-auto'>
-                    <p className='mb-4 font-semibold'>Comments ({comments.length})</p>
-                    <div className='flex flex-col gap-4'>
+                    <h3 className='text-xl font-semibold mb-6'>Comments ({comments.length})</h3>
+                    <div className='flex flex-col gap-4 mb-8'>
                         {comments.map((item, index) => (
-                            <div key={index} className='relative bg-primary/2 border border-primary/5 max-w-xl p-4 rounded text-gray-600'>
-                                <div className='flex items-center gap-2 mb-2'>
-                                    <img src={assets.user_icon} alt="usericon" className='w-6' />
-                                    <p className='font-medium'>{item.name}</p>
+                            <div key={index} className='bg-gray-50 p-4 rounded-lg shadow-sm'>
+                                <div className='flex items-center gap-3 mb-2'>
+                                    <img src={assets.user_icon} alt="user" className='w-8 h-8' />
+                                    <div>
+                                        <p className='font-medium'>{item.name}</p>
+                                        <p className='text-xs text-gray-500'>
+                                            {Moment(item.createdAt).fromNow()}
+                                        </p>
+                                    </div>
                                 </div>
-                                <p className='text-sm max-w-md ml-8'>{item.content}</p>
-                                <div className='absolute right-4 bottom-3 flex items-center gap-2 text-xs'>
-                                    {Moment(item.createdAt).fromNow()}
-                                </div>
+                                <p className='text-gray-700 pl-11'>{item.content}</p>
                             </div>
                         ))}
                     </div>
-                </div>
 
-                {/* Add Comment */}
-                <div className='max-w-3xl mx-auto'>
-                    <p className='font-semibold mb-4'>Add your comment</p>
-                    <form className='flex flex-col items-start gap-4 max-w-lg' onSubmit={addComment}>
-                        <textarea
-                            onChange={(e) => setContent(e.target.value)}
-                            value={content}
-                            placeholder='Comment'
-                            className='w-full p-2 border border-gray-300 rounded outline-none h-48'
-                            required
-                        ></textarea>
-                        <button
-                            type='submit'
-                            className='bg-primary text-white rounded p-2 px-8 hover:scale-102 transition-all cursor-pointer'
-                        >
-                            Submit
-                        </button>
-                    </form>
+                    {/* Add Comment Form */}
+                    <div className='bg-gray-50 p-6 rounded-lg'>
+                        <h4 className='font-semibold mb-4'>Leave a Comment</h4>
+                        <form onSubmit={addComment} className='space-y-4'>
+                            <div>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Your name"
+                                    className='w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50'
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <textarea
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    placeholder="Your comment"
+                                    className='w-full p-3 border border-gray-300 rounded h-32 focus:outline-none focus:ring-2 focus:ring-primary/50'
+                                    required
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className='bg-primary text-white py-2 px-6 rounded hover:bg-primary-dark transition-colors'
+                            >
+                                Post Comment
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 {/* Share Buttons */}
-                <div className='my-24 max-w-3xl mx-auto'>
-                    <p className='font-semibold my-4'>Share this article on social media</p>
-                    <div className='flex'>
-                        <img src={assets.facebook_icon} width={50} alt="Facebook" />
-                        <img src={assets.twitter_icon} width={50} alt="Twitter" />
-                        <img src={assets.googleplus_icon} width={50} alt="Google Plus" />
+                <div className='my-14 max-w-3xl mx-auto text-center'>
+                    <h3 className='font-semibold mb-4'>Share this article</h3>
+                    <div className='flex justify-center gap-4'>
+                        <button className='p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors'>
+                            <img src={assets.facebook_icon} width={24} alt="Facebook" />
+                        </button>
+                        <button className='p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors'>
+                            <img src={assets.twitter_icon} width={24} alt="Twitter" />
+                        </button>
                     </div>
                 </div>
             </div>

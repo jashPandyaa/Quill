@@ -12,6 +12,7 @@ const Home = () => {
       <Navbar></Navbar>
       <Header></Header>
       <BlogList></BlogList>
+      {/* <Loader></Loader> */}
       <Newsletter></Newsletter>
       <Footer></Footer>
     </div>
