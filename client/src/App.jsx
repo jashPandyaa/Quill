@@ -30,7 +30,7 @@ import Comments from './pages/admin/Comments.jsx';
 import ListBlog from './pages/admin/ListBlog.jsx';
 import Login from './components/admin/Login.jsx';
 import Register from './components/Register.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import { useAppContext } from './context/AppContext.jsx';
 
