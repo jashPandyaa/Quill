@@ -10,32 +10,42 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null); // Add user state
     const [blogs, setBlogs] = useState([]);
     const [input, setInput] = useState("");
 
     const fetchBlogs = async () => {
         try {
             const { data } = await axios.get('/api/blog/all');
-            data.success ? setBlogs(data.blogs) : toast.error(data.message);
+            if (data.success) {
+                setBlogs(data.blogs);
+                if (token) {
+                    // Fetch user data if logged in
+                    const userRes = await axios.get('/api/auth/me');
+                    setUser(userRes.data.user);
+                }
+            }
         } catch (error) {
             toast.error(error.message);
         }
     };
 
-    // Initialize axios headers properly
-    const initializeAuth = (token) => {
+    const initializeAuth = (token, userData = null) => {
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            if (userData) setUser(userData);
         } else {
             delete axios.defaults.headers.common['Authorization'];
+            setUser(null);
         }
     };
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
+        const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedToken) {
             setToken(storedToken);
-            initializeAuth(storedToken);
+            initializeAuth(storedToken, storedUser);
         }
         fetchBlogs();
     }, []);
@@ -44,13 +54,16 @@ export const AppProvider = ({ children }) => {
         axios,
         navigate,
         token,
-        setToken: (newToken) => {
+        user,
+        setToken: (newToken, userData) => {
             setToken(newToken);
-            initializeAuth(newToken);
+            initializeAuth(newToken, userData);
             if (newToken) {
                 localStorage.setItem('token', newToken);
+                if (userData) localStorage.setItem('user', JSON.stringify(userData));
             } else {
                 localStorage.removeItem('token');
+                localStorage.removeItem('user');
             }
         },
         blogs,

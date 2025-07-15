@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../context/AppContext';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Login = () => {
     const { setToken, navigate } = useAppContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdminLogin, setIsAdminLogin] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('/api/admin/login', { email, password });
-
-            if (data.success) {
-                setToken(data.token); // This now handles all auth setup
-                navigate('/admin'); // Redirect to admin dashboard
-            } else {
-                toast.error(data.message);
+            const endpoint = isAdminLogin ? '/api/admin/login' : '/api/auth/login';
+            const { data } = await axios.post(endpoint, { email, password });
+            
+            if (data.token) {
+                setToken(data.token, data.user);
+                if (isAdminLogin) {
+                    navigate('/admin');
+                } else {
+                    navigate('/dashboard');
+                }
+                toast.success(`Welcome back, ${data.user?.name || 'Admin'}!`);
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed");
@@ -25,45 +30,58 @@ const Login = () => {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen'>
-            <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg'>
-                <div className='flex flex-col items-center justify-center'>
-                    <div className='w-full py-6 text-center'>
-                        <h1 className='text-3xl font-bold'><span className='text-primary'>Admin</span> Login</h1>
-                        <p className='font-light'>Enter your credentials to access the admin panel</p>
+        <div className="flex items-center justify-center h-screen">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold">
+                        {isAdminLogin ? 'Admin Login' : 'User Login'}
+                    </h1>
+                    <p className="text-gray-600">
+                        Enter your credentials to {isAdminLogin ? 'access the admin panel' : 'continue'}
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-sm font-medium">Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md"
+                        />
                     </div>
+                    <div>
+                        <label className="block text-sm font-medium">Password</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full px-3 py-2 border rounded-md"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full px-4 py-2 font-medium text-white bg-primary rounded-md hover:bg-primary-dark"
+                    >
+                        Login
+                    </button>
+                </form>
 
-                    <form onSubmit={handleSubmit} className='mt-6 w-full sm:max-w-md text-gray-600'>
-                        <div className='flex flex-col'> 
-                            <label>Email</label>
-                            <input 
-                                onChange={e => setEmail(e.target.value)} 
-                                value={email}  
-                                type="email" 
-                                placeholder='Your email id' 
-                                required 
-                                className='border-b-2 border-gray-300 p-2 outline-none mb-6' 
-                            />
-                        </div>
-
-                        <div className='flex flex-col'> 
-                            <label>Password</label>
-                            <input 
-                                onChange={e => setPassword(e.target.value)} 
-                                value={password} 
-                                type="password" 
-                                placeholder='Your password' 
-                                required 
-                                className='border-b-2 border-gray-300 p-2 outline-none mb-6' 
-                            />
-                        </div>
-                        <button 
-                            type="submit" 
-                            className='w-full py-3 font-medium bg-primary text-white rounded cursor-pointer hover:bg-primary/90 transition-all'
-                        >
-                            Login
-                        </button>
-                    </form>
+                <div className="text-center text-sm">
+                    {isAdminLogin ? (
+                        <>
+                            <p>Not an admin? <button onClick={() => setIsAdminLogin(false)} className="text-primary">User Login</button></p>
+                            <p>Don't have an account? <Link to="/register" className="text-primary">Register</Link></p>
+                        </>
+                    ) : (
+                        <>
+                            <p>Admin? <button onClick={() => setIsAdminLogin(true)} className="text-primary">Admin Login</button></p>
+                            <p>Don't have an account? <Link to="/register" className="text-primary">Register</Link></p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

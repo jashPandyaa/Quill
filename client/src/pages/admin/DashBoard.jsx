@@ -1,101 +1,93 @@
-import React, { useEffect } from 'react'
-import { assets, dashboard_data } from '../../assets/assets'
-import { useState } from 'react'
-import BlogTableItem from '../../components/admin/BlogTableItem';
-import { useAppContext } from '../../context/AppContext';
-import toast from 'react-hot-toast';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
+import Loader from '../components/Loader';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
-const DashBoard = () => {
+const Dashboard = () => {
+    const { user, blogs, axios } = useAppContext();
+    const [userBlogs, setUserBlogs] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  const [dashboardData , setDashboardData ] = useState({
-    blogs : 0,
-    comments : 0,
-    drafts : 0,
-    recentBlogs : []
-  });
+    useEffect(() => {
+        const fetchUserBlogs = async () => {
+            try {
+                const { data } = await axios.get('/api/blog/user/blogs');
+                if (data.success) {
+                    setUserBlogs(data.blogs);
+                }
+            } catch (error) {
+                console.error('Error fetching user blogs:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  const { axios , token } = useAppContext();
-
-  const fetchDashboard = async () => {
-    try {
-      const { data } = await axios.get("/api/admin/dashboard", {
-        headers: {
-          'Authorization': `Bearer ${token}` // Explicitly add token
+        if (user) {
+            fetchUserBlogs();
         }
-      });
+    }, [user, axios]);
 
-      data.success ? setDashboardData(data.dashboardData) : toast.error(data.message);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
+    if (loading) return <Loader />;
 
-  useEffect(() => {
-    fetchDashboard()
-  } , [])
- 
-  return (
-    <div className='flex-1 p-4 md:p-10 bg-blue-50/50'>
-        <div className='flex flex-wrap gap-4'>
-
-          <div  className='flex items-center gap-4 bg-white p-4 min-w-58 rounded
-          shadow cursor-pointer hover:scale-105 transition-all'> 
-            <img src={assets.dashboard_icon_1} alt="dashboard icon1" />
-            <div>
-              <p className='text-xl font-semibold text-gray-600'> {dashboardData.blogs} </p>
-              <p className='text-gray-400 font-light'>Blogs</p>
-            </div>
-          </div>
-
-          <div  className='flex items-center gap-4 bg-white p-4 min-w-58 rounded
-          shadow cursor-pointer hover:scale-105 transition-all'> 
-            <img src={assets.dashboard_icon_2} alt="dashboard icon2" />
-            <div>
-              <p className='text-xl font-semibold text-gray-600'> {dashboardData.comments} </p>
-              <p className='text-gray-400 font-light'>Comments</p>
-            </div>
-          </div>
-
-          <div  className='flex items-center gap-4 bg-white p-4 min-w-58 rounded
-          shadow cursor-pointer hover:scale-105 transition-all'> 
-            <img src={assets.dashboard_icon_3} alt="dashboard icon3" />
-            <div>
-              <p className='text-xl font-semibold text-gray-600'> {dashboardData.drafts} </p>
-              <p className='text-gray-400 font-light'>Drafts</p>
-            </div>
-          </div>
-        </div>
-
+    return (
         <div>
-          <div className='flex items-center gap-3 m-4 mt-6 text-gray-600'>
-            <img src={assets.dashboard_icon_4} alt="dashboard icon4" />
-            <p>Latest Blogs</p>
-          </div>
+            <Navbar />
+            <div className="container mx-auto p-4 md:p-8">
+                <h1 className="text-2xl md:text-3xl font-bold mb-6">
+                    Welcome, {user?.name}
+                </h1>
 
-          <div className='relative max-w-4xl overflow-x-auto shadow rounded-lg
-          scrollbar-hide bg-white'>
-            <table className='w-full text-sm text-gray-500'>
-              <thead className='text-xs text-gray-600 text-left uppercase'>
-                <tr>
-                  <th scope='col' className='px-2 py-4 xl:px-6'> # </th>
-                  <th scope='col' className='px-2 py-4'> Blog Title </th>
-                  <th scope='col' className='px-2 py-4 max-sm:hidden'> Date </th>
-                  <th scope='col' className='px-2 py-4 max-sm:hidden'> Status </th>
-                  <th scope='col' className='px-2 py-4'> Actions </th>
-                </tr>
-              </thead>
-              <tbody>
-                {dashboardData.recentBlogs.map((blog,index) => {
-                  return <BlogTableItem key={blog._id} blog={blog}
-                  fetchBlogs={fetchDashboard} index={index+1} />
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>        
-        
-    </div>
-  )
-}
+                <div className="mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-semibold">Your Blogs</h2>
+                        <Link
+                            to="/add-blog"
+                            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+                        >
+                            Add New Blog
+                        </Link>
+                    </div>
 
-export default DashBoard
+                    {userBlogs.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {userBlogs.map(blog => (
+                                <div key={blog._id} className="border p-4 rounded-lg shadow hover:shadow-md transition">
+                                    <h3 className="font-bold text-lg">{blog.title}</h3>
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        {new Date(blog.createdAt).toLocaleDateString()}
+                                    </p>
+                                    <p className={`text-sm ${
+                                        blog.isPublished ? 'text-green-600' : 'text-orange-600'
+                                    }`}>
+                                        {blog.isPublished ? 'Published' : 'Draft'}
+                                    </p>
+                                    <Link 
+                                        to={`/blog/${blog._id}`}
+                                        className="text-primary text-sm mt-2 inline-block"
+                                    >
+                                        View Blog
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="bg-gray-50 p-8 rounded-lg text-center">
+                            <p className="text-gray-600">You haven't written any blogs yet.</p>
+                            <Link
+                                to="/add-blog"
+                                className="mt-4 inline-block px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+                            >
+                                Write Your First Blog
+                            </Link>
+                        </div>
+                    )}
+                </div>
+            </div>
+            <Footer />
+        </div>
+    );
+};
+
+export default Dashboard;
