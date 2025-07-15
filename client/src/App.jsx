@@ -20,19 +20,19 @@
 
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Blog from './pages/Blog';
-import UserAddBlog from './pages/UserAddBlog';
-import Layout from './pages/admin/Layout';
-import DashBoard from './pages/admin/DashBoard';
-import AddBlog from './pages/admin/AddBlog';
-import Comments from './pages/admin/Comments';
-import ListBlog from './pages/admin/ListBlog';
-import Login from './components/admin/Login';
-import Register from './components/Register';
-import ProtectedRoute from './components/ProtectedRoute';
+import Home from './pages/Home.jsx';
+import Blog from './pages/Blog.jsx';
+import UserAddBlog from './pages/UserAddBlog.jsx';
+import Layout from './pages/admin/Layout.jsx';
+import DashBoard from './pages/admin/DashBoard.jsx';
+import AddBlog from './pages/admin/AddBlog.jsx';
+import Comments from './pages/admin/Comments.jsx';
+import ListBlog from './pages/admin/ListBlog.jsx';
+import Login from './components/admin/Login.jsx';
+import Register from './components/Register.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { Toaster } from 'react-hot-toast';
-import { useAppContext } from './context/AppContext';
+import { useAppContext } from './context/AppContext.jsx';
 
 
 

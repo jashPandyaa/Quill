@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { assets, blogCategories } from '../assets/assets';
 import Quill from 'quill';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext.jsx';
 import toast from 'react-hot-toast';
 import { parse } from 'marked';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 
 const UserAddBlog = () => {
     const { axios, token, user } = useAppContext();

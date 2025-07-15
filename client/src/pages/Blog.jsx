@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { assets } from '../assets/assets';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar.jsx';
 import Moment from "moment";
-import Footer from '../components/Footer';
-import Loader from '../components/Loader';
-import { useAppContext } from '../context/AppContext';
+import Footer from '../components/Footer.jsx';
+import Loader from '../components/Loader.jsx';
+import { useAppContext } from '../context/AppContext.jsx';
 import toast from 'react-hot-toast';
 
 const Blog = () => {
