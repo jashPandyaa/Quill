@@ -106,20 +106,9 @@ const Blog = () => {
                     {data.title}
                 </h1>
                 <h2 className='my-5 max-w-lg truncate mx-auto'>{data.title}</h2>
-                <div className="flex items-center justify-center gap-4 mt-4">
-                    <p className='inline-block py-1 px-4 rounded-full border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>
-                        {data.author?.name || 'Unknown Author'}
-                    </p>
-                    <button 
-                        onClick={handleLike}
-                        className={`flex items-center gap-1 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}
-                    >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                        </svg>
-                        {likeCount}
-                    </button>
-                </div>
+                <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>
+                    Admin
+                </p>
             </div>
 
             {/* Blog Main Content */}

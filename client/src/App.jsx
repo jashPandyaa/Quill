@@ -22,7 +22,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/blog/:id' element={<Blog/>}/>
-        <Route path="/admin" element={token ? <Layout /> : <Login></Login>}> 
+        {/* Only admin routes - no /login route needed */}
+        <Route path="/admin" element={token ? <Layout /> : <Login />}>
           <Route index element={<DashBoard />} />
           <Route path='addBlog' element={<AddBlog />} />
           <Route path='listBlog' element={<ListBlog />} />
