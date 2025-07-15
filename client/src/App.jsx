@@ -33,7 +33,7 @@ const App = () => {
                 {/* User Routes */}
                 <Route path="/dashboard" element={
                     <UserRoute>
-                        <Dashboard />
+                        <DashBoard />
                     </UserRoute>
                 } />
                 <Route path="/add-blog" element={
