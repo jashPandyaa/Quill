@@ -1,5 +1,6 @@
+// client/src/components/ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext.jsx';
+import { useAppContext } from '../context/AppContext';
 
 export const ProtectedRoute = ({ children, adminOnly = false }) => {
     const { user, token } = useAppContext();
