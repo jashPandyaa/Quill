@@ -10,7 +10,7 @@ import ListBlog from './pages/admin/ListBlog';
 import Comments from './pages/admin/Comments';
 import Login from './components/Login';
 import Register from './components/Register';
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 import UserAddBlog from './pages/UserAddBlog';
 import 'quill/dist/quill.snow.css';
 import { Toaster } from 'react-hot-toast';
