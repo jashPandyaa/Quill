@@ -3,18 +3,22 @@ import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema({
     blog: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'blog', // Must be lowercase to match your Blog model
+        ref: 'blog',
         required: true
     },
-    name: { type: String, required: true },
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     content: { type: String, required: true },
     isApproved: { type: Boolean, default: false }
 }, {
     timestamps: true,
-    strictPopulate: false // This bypasses schema validation
+    strictPopulate: false
 });
 
-// Add this critical line to prevent model recompilation issues
+// Prevent model overwrite upon recompilation
 if (mongoose.models.Comment) {
     delete mongoose.models.Comment;
 }
