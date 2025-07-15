@@ -11,7 +11,7 @@ const Footer = () => {
                     <img src="/favicon.svg" alt="Quill Logo" className="w-10 h-10" />
                     <h1 className='text-3xl font-semibold text-black'>Quill</h1>
                 </div>
-                <p className='max-w-[410px] mt-6'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati culpa unde delectus nulla repudiandae itaque, deserunt pariatur optio in molestias nostrum tenetur, exercitationem autem atque reprehenderit saepe at a suscipit.</p>
+                <p className='text-2xl font-semibold max-w-[410px] mt-6'>Where Words Find Wings.</p>
             </div>
 
             <div className='flex flex-wrap justify-between w-full md:w-[45%] gap-5'>
