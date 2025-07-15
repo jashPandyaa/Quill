@@ -10,8 +10,24 @@ const app = express();
 
 await connectDB();
 
-// Middlewares
-app.use(cors());
+// Configure CORS properly
+const corsOptions = {
+  origin: [
+    'https://quill-mu-one.vercel.app', // Your frontend URL
+    'http://localhost:3000', 
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // If using cookies/sessions
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
+// Other middlewares
 app.use(express.json());
 
 // Routes
