@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import User from './models/User.js';
+import User from '../models/User'
 
 // Helper function to generate token
 const generateToken = (user) => {
