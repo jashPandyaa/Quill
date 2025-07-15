@@ -22,15 +22,4 @@ const auth = (req, res, next) => {
     }
 }
 
-// Admin middleware
-const admin = (req, res, next) => {
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ 
-            success: false, 
-            message: "Not authorized as admin" 
-        });
-    }
-    next();
-}
-
-export { auth, admin };
+export default auth;
