@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppContext } from './context/AppContext.jsx';
-import Loader from '../components/Loader.jsx';
-import Navbar from '../components/Navbar.jsx';
-import Footer from '../components/Footer.jsx';
+import { useAppContext } from '../../context/AppContext.jsx';
+import Loader from '../../components/Loader.jsx';
+import Navbar from '../../components/Navbar.jsx';
+import Footer from '../../components/Footer.jsx';
 
 const Dashboard = () => {
     const { user, blogs, axios } = useAppContext();
