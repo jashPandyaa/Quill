@@ -19,6 +19,9 @@ const BlogList = () => {
         )
     }
 
+    console.log("Blogs data:", blogs); // Add this line
+    console.log("Filtered blogs:", filteredBlogs()); // Add this line
+
     return (
         <div>
             <div className='flex justify-center gap-4 sm:gap-8 my-10 relative'>
