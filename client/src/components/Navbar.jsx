@@ -39,7 +39,7 @@ const Navbar = () => {
                 {token && (
                     <button
                         onClick={() => navigate('/admin')}
-                        className='px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors'
+                        className='px-4 py-2 bg-gray-100 text-sm hover:bg-gray-200 rounded-lg transition-colors'
                     >
                         Dashboard
                     </button>
@@ -47,7 +47,7 @@ const Navbar = () => {
 
                 <button 
                     onClick={token ? handleLogout : handleLogin}
-                    className='flex items-center gap-2 rounded-full text-sm cursor-pointer bg-primary text-white px-6 py-2.5'
+                    className='hidden md:flex flex items-center gap-2 rounded-full text-sm cursor-pointer bg-primary text-white px-6 py-2.5'
                 >
                     {token ? 'Logout' : 'Admin Login'}
                     <img src={assets.arrow} className='w-3' alt="arrow" />
