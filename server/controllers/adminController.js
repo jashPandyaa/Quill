@@ -26,15 +26,12 @@ export const getAllBlogAdmin = async (req,res) => {
     }
 }
 
-// In your adminController.js
 export const getAllComments = async (req, res) => {
     try {
-        // METHOD 1: Try normal population first
         let comments = await Comment.find({})
             .lean()
             .exec();
         
-        // If population failed, do manual join
         if (!comments[0]?.blog?.title) {
             const blogIds = comments.map(c => c.blog).filter(id => id);
             const blogs = await Blog.find({ _id: { $in: blogIds } })

@@ -10,7 +10,13 @@ const app = express();
 await connectDB();
 
 // MiddleWares
-app.use(cors());
+app.use(cors({
+    origin: [
+      'http://localhost:5173',       // Dev
+      'https://quill-mu-one.vercel.app'  // Production
+    ],
+    credentials: true
+  }));
 app.use(express.json());
 
 // Routes

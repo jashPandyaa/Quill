@@ -43,7 +43,6 @@ export const addBlog = async (req,res) => {
 export const getAllBlogs = async (req, res) => {
     try {
         const blogs = await Blog.find({ isPublished: true })
-            .populate('author', 'name')
             .sort({ createdAt: -1 });
         res.json({ success: true, blogs });
     } catch (error) {
@@ -93,17 +92,17 @@ export const togglePublish = async (req,res) => {
 
 export const addComment = async (req, res) => {
     try {
-        const { blog, content } = req.body;
-        await Comment.create({ 
-            blog, 
-            content,
-            postedBy: req.user.id 
-        });
-        res.json({ success: true, message: 'Comment added for review' });
+      const { blog, content, name } = req.body;
+      if (!name || !content) {
+        return res.status(400).json({ success: false, message: 'Name and content are required' });
+      }
+      
+      await Comment.create({ blog, content, name });
+      res.json({ success: true, message: 'Comment added for review' });
     } catch (error) {
-        res.json({ success: false, message: error.message });
+      res.status(500).json({ success: false, message: error.message });
     }
-};
+  };
 
 export const getBlogComments = async (req,res) => {
     try {
