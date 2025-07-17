@@ -10,13 +10,12 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
-    const [user, setUser] = useState(null); // Add user state
+    const [user, setUser] = useState(null); 
     const [blogs, setBlogs] = useState([]); 
     const [input, setInput] = useState("");
 
     const fetchBlogs = async () => {
         try {
-            // Remove auth header for public access
             const config = token ? {} : { headers: { Authorization: undefined }};
             const { data } = await axios.get('/api/blog/all', config);
             
@@ -27,7 +26,6 @@ export const AppProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Fetch error:", error);
-            // Temporary mock data fallback - remove in production
             setBlogs([{
                 _id: "1",
                 title: "Sample Blog",
@@ -41,20 +39,20 @@ export const AppProvider = ({ children }) => {
 
     const initializeAuth = (token, userData = null) => {
         if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            if (userData) setUser(userData);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          localStorage.setItem('token', token); 
+          if (userData) setUser(userData);
         } else {
-            delete axios.defaults.headers.common['Authorization'];
-            setUser(null);
+          delete axios.defaults.headers.common['Authorization'];
+          localStorage.removeItem('token');
+          setUser(null);
         }
-    };
+      };
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
-        const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedToken) {
             setToken(storedToken);
-            initializeAuth(storedToken, storedUser);
         }
         fetchBlogs();
     }, []);

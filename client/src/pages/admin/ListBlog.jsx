@@ -7,13 +7,13 @@ import toast from 'react-hot-toast';
 const ListBlog = () => {
 
   const [blogs, setBlogs] = useState([]);
-  const { axios, token } = useAppContext(); // Destructure token
+  const { axios, token } = useAppContext(); 
 
   const fetchBlogs = async () => {
     try {
       const { data } = await axios.get("/api/admin/blogs", {
         headers: {
-          'Authorization': `Bearer ${token}` // Explicitly add token
+          'Authorization': `Bearer ${token}`
         }
       });
       if(data.success){
@@ -22,7 +22,7 @@ const ListBlog = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error('Error details:', error.response); // Add detailed logging
+      console.error('Error details:', error.response); 
       toast.error(error.response?.data?.message || error.message);
     }
   }

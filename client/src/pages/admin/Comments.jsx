@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 const Comments = () => {
   const [comments, setComments] = useState([]);
   const [filter, setFilter] = useState("Not Approved");
-  const [loading, setLoading] = useState(true); // Start with loading true
+  const [loading, setLoading] = useState(true); 
   const { axios, token } = useAppContext();
 
   const fetchComments = async () => {
@@ -15,22 +15,20 @@ const Comments = () => {
       });
       
       if (data.success) {
-        // Transform data to ensure consistent structure
         const safeComments = data.comments.map(c => ({
           ...c,
-          // Handle all possible cases of blog data
           blogTitle: c.blog?.title || c.blogTitle || '[Blog Not Found]',
           isApproved: c.isApproved || false
         }));
         setComments(safeComments);
       } else {
         toast.error(data.message);
-        setComments([]); // Reset to empty array on failure
+        setComments([]);
       }
     } catch (error) {
       console.error("Comments Error:", error);
       toast.error("Failed to load comments");
-      setComments([]); // Reset to empty array on error
+      setComments([]); 
     } finally {
       setLoading(false);
     }

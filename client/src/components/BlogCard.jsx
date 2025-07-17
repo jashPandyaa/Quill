@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const BlogCard = ({blog}) => {
-    const { title, description, category, image, _id } = blog;
+    const { title, subTitle, description, category, image, _id } = blog;
     const navigate = useNavigate();
 
     return (
@@ -13,7 +13,8 @@ const BlogCard = ({blog}) => {
             </span>
             <div className='p-5'>
                 <h5 className='mb-2 font-medium text-gray-900 line-clamp-2'>{title}</h5>
-                <p className='mb-3 text-xs text-gray-600 line-clamp-3' dangerouslySetInnerHTML={{__html: description}}></p>
+                <h5 className='mb-2 font-small text-gray-600 line-clamp-3'>{subTitle}</h5>
+                <p className='mb-3 text-xs text-black-400 line-clamp-1' dangerouslySetInnerHTML={{__html: description}}></p>
             </div>
         </div>
     )

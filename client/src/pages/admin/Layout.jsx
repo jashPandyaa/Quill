@@ -7,7 +7,7 @@ const Layout = () => {
     const { navigate, setToken } = useAppContext();
 
     const logout = () => {
-        setToken(null); // This now handles all cleanup
+        setToken(null);
         navigate("/");
     };
 

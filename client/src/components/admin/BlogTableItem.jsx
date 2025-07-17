@@ -14,11 +14,9 @@ const BlogTableItem = ({blog , fetchBlogs , index}) => {
       const confirm = window.confirm("Are you sure you want to delete this blog?");
       if(!confirm) return;
       try {
-        // const {data} = await axios.post('/api/blog/delete' , {id: blog._id});
-
         const { data } = await axios.post("/api/blog/delete", {id: blog._id} , {
           headers: {
-            'Authorization': `Bearer ${token}` // Explicitly add token
+            'Authorization': `Bearer ${token}`
           }
         });
 
@@ -38,7 +36,7 @@ const BlogTableItem = ({blog , fetchBlogs , index}) => {
       try {
         const { data } = await axios.post("/api/blog/toggle-publish", {id: blog._id} , {
           headers: {
-            'Authorization': `Bearer ${token}` // Explicitly add token
+            'Authorization': `Bearer ${token}` 
           }
         });
         if(data.success){

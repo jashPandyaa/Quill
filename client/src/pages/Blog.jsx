@@ -31,43 +31,39 @@ const Blog = () => {
 
     const fetchComments = async () => {
         try {
-            const { data } = await axios.get(`/api/blog/${id}/comments`);
-            if (data.success) {
-                setComments(data.comments);
-            } else {
-                toast.error(data.message);
-            }
+          const { data } = await axios.post('/api/blog/comments', { blogId: id });
+          if (data.success) {
+            setComments(data.comments);
+          }
         } catch (error) {
-            toast.error(error.message);
+          toast.error(error.response?.data?.message || 'Failed to load comments');
         }
-    };
+      };
 
-    const addComment = async (e) => {
+      const addComment = async (e) => {
         e.preventDefault();
         if (!name || !content) {
-            toast.error('Please enter your name and comment');
-            return;
+          toast.error('Please enter your name and comment');
+          return;
         }
-
+      
         try {
-            const { data } = await axios.post('/api/blog/add-comment', { 
-                blog: id, 
-                name, 
-                content 
-            });
-            
-            if (data.success) {
-                toast.success('Comment added successfully');
-                setName('');
-                setContent('');
-                fetchComments();
-            } else {
-                toast.error(data.message);
-            }
+          const { data } = await axios.post('/api/blog/add-comment', { 
+            blog: id, 
+            name, 
+            content 
+          });
+          
+          if (data.success) {
+            toast.success(data.message);
+            setName('');
+            setContent('');
+            fetchComments(); 
+          }
         } catch (error) {
-            toast.error(error.message);
+          toast.error(error.response?.data?.message || 'Failed to add comment');
         }
-    };
+      };
 
     useEffect(() => {
         fetchBlogData();
@@ -87,7 +83,10 @@ const Blog = () => {
                 </p>
                 <h1 className='text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800'>
                     {data.title}
-                </h1>
+                </h1><br />
+                <h1 className='text-xl sm:text-3xl font-semibold max-w-xl mx-auto text-gray-500'>
+                    {data.subTitle}
+                </h1><br />
                 <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>
                     Admin
                 </p>
@@ -143,7 +142,7 @@ const Blog = () => {
                             </div>
                             <button
                                 type="submit"
-                                className='bg-primary text-white py-2 px-6 rounded hover:bg-primary-dark transition-colors'
+                                className='bg-primary text-white py-2 px-6 rounded hover:bg-primary-dark transition-colors cursor-pointer'
                             >
                                 Post Comment
                             </button>
