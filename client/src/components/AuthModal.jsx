@@ -3,7 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 
 const AuthModal = ({ mode, onClose, onSuccess, onModeChange }) => {
-  const { backendUrl } = useAppContext();
+  const { backendUrl, setToken } = useAppContext();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -41,8 +41,11 @@ const AuthModal = ({ mode, onClose, onSuccess, onModeChange }) => {
       const result = await response.json();
       
       if (result.success) {
-        localStorage.setItem('token', result.token);
-        onSuccess();
+        setToken(result.token, result.user);
+        
+        toast.success(mode === 'signup' ? 'Account created successfully!' : 'Login successful!');
+        
+        onSuccess(result.token, result.user);
       }
     } catch (error) {
       console.error('Auth error:', error);

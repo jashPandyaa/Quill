@@ -53,7 +53,7 @@ const UserBlogs = () => {
       <div className="flex flex-col md:flex-row min-h-screen bg-blue-50/50">
         <UserSidebar />
         <div className="flex-1 p-4 md:p-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 bg-blue-50/50">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-0">My Blogs</h1>
             <Link
               to="/user/add-blog"
@@ -66,7 +66,7 @@ const UserBlogs = () => {
             </Link>
           </div>
 
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-blue-50/50 rounded-lg shadow overflow-hidden ">
             <div className="md:hidden">
               {blogs.length > 0 ? (
                 <div className="divide-y divide-gray-200">
@@ -154,12 +154,6 @@ const UserBlogs = () => {
                         className="text-blue-600 hover:text-blue-900 mr-4"
                       >
                         View
-                      </Link>
-                      <Link
-                        to={`/user/edit-blog/${blog._id}`}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        Edit
                       </Link>
                     </td>
                   </tr>

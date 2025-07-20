@@ -5,6 +5,7 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { parse } from 'marked';
 import 'quill/dist/quill.snow.css';
+import './mobile-responsive.css'; 
 
 const UserAddBlog = () => {
   const { axios, token, navigate } = useAppContext();
@@ -184,7 +185,7 @@ const UserAddBlog = () => {
           </button>
         </div>
 
-        <p className='mt-4'>Blog Category</p>
+        <p className='blog-category-section'>Blog Category</p>
         <select 
           onChange={e => setCategory(e.target.value)}   
           name="category" 

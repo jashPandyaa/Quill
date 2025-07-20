@@ -103,62 +103,63 @@ const UserBlogList = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="bg-white rounded-lg shadow overflow-hidden">
-                    <div className="md:hidden space-y-4 p-4">
-                        {blogs.map((blog) => (
-                            <div key={blog._id} className="border rounded-lg p-4">
-                                <div className="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">{blog.title}</h3>
-                                        <p className="text-sm text-gray-500">{blog.subTitle}</p>
-                                    </div>
-                                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                                        {blog.category}
-                                    </span>
-                                </div>
-                                
-                                <div className="flex justify-between items-center mt-3">
-                                    <div>
-                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                            blog.isPublished 
-                                                ? 'bg-green-100 text-green-800' 
-                                                : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
-                                            {blog.isPublished ? 'Published' : 'Draft'}
-                                        </span>
-                                        <span className="ml-2 text-xs text-gray-500">
-                                            {new Date(blog.createdAt).toLocaleDateString()}
-                                        </span>
-                                    </div>
-                                    
-                                    <div className="flex space-x-2">
-                                        <button
-                                            onClick={() => navigate(`/blog/${blog._id}`)}
-                                            className="text-blue-600 hover:text-blue-900 text-sm"
-                                        >
-                                            View
-                                        </button>
-                                        <button
-                                            onClick={() => togglePublishStatus(blog._id, blog.isPublished)}
-                                            className={`text-sm ${
-                                                blog.isPublished 
-                                                    ? 'text-yellow-600 hover:text-yellow-900' 
-                                                    : 'text-green-600 hover:text-green-900'
-                                            }`}
-                                        >
-                                            {blog.isPublished ? 'Unpublish' : 'Publish'}
-                                        </button>
-                                        <button
-                                            onClick={() => deleteBlog(blog._id)}
-                                            className="text-red-600 hover:text-red-900 text-sm"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                <div className="bg-blue/50 rounded-lg shadow overflow-hidden">
+                <div className="md:hidden space-y-4 p-4">
+                  {blogs.map((blog) => (
+                    <div key={blog._id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-gray-900 truncate">{blog.title}</h3>
+                          <p className="text-sm text-gray-500 truncate">{blog.subTitle}</p>
+                        </div>
+                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 whitespace-nowrap ml-2">
+                          {blog.category}
+                        </span>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-3 gap-2">
+                        <div className="flex flex-wrap gap-2">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            blog.isPublished 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {blog.isPublished ? 'Published' : 'Draft'}
+                          </span>
+                          <span className="text-xs text-gray-500 whitespace-nowrap">
+                            {new Date(blog.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => navigate(`/blog/${blog._id}`)}
+                            className="text-blue-600 hover:text-blue-900 text-sm whitespace-nowrap"
+                          >
+                            View
+                          </button>
+                          <button
+                            onClick={() => togglePublishStatus(blog._id, blog.isPublished)}
+                            className={`text-sm whitespace-nowrap ${
+                              blog.isPublished 
+                                ? 'text-yellow-600 hover:text-yellow-900' 
+                                : 'text-green-600 hover:text-green-900'
+                            }`}
+                          >
+                            {blog.isPublished ? 'Unpublish' : 'Publish'}
+                          </button>
+                          <button
+                            onClick={() => deleteBlog(blog._id)}
+                            className="text-red-600 hover:text-red-900 text-sm whitespace-nowrap"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              
 
                     <div className="hidden md:block overflow-x-auto">
                         <table className="w-full">
