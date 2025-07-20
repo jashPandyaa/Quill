@@ -2,11 +2,11 @@ import express from 'express'
 import { 
     addBlog, addComment, deleteBlogId, 
     generateContent, getAllBlogs, 
-    getBlogComments, getBlogId, togglePublish 
+    getBlogComments, getBlogId, togglePublish,
+    toggleLike, getBlogLikes, checkUserLike
 } from '../controllers/blogController.js';
 import upload from '../middleware/multer.js';
 import auth from '../middleware/auth.js';
-import Blog from '../models/blog.js';
 
 const blogRouter = express.Router();
 
@@ -18,5 +18,8 @@ blogRouter.post("/toggle-publish", auth, togglePublish);
 blogRouter.post("/add-comment", addComment);
 blogRouter.post("/comments", getBlogComments);
 blogRouter.post("/generate", auth, generateContent);
+blogRouter.post("/:blogId/like", auth, toggleLike);
+blogRouter.get("/:blogId/likes", getBlogLikes);
+blogRouter.get("/:blogId/check-like", auth, checkUserLike);
 
 export default blogRouter;

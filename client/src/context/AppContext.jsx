@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import toast from "react-hot-toast";
 
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+axios.defaults.baseURL = BACKEND_URL;
 
 const AppContext = createContext();
 
@@ -26,14 +26,6 @@ export const AppProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Fetch error:", error);
-            setBlogs([{
-                _id: "1",
-                title: "Sample Blog",
-                description: "<p>Example content</p>",
-                category: "Technology",
-                image: "https://via.placeholder.com/600x400",
-                createdAt: new Date()
-            }]);
         }
     };
 
@@ -76,7 +68,8 @@ export const AppProvider = ({ children }) => {
         blogs,
         setBlogs,
         input,
-        setInput
+        setInput,
+        backendUrl: BACKEND_URL,
     };
 
     return (
@@ -84,6 +77,9 @@ export const AppProvider = ({ children }) => {
             {children}
         </AppContext.Provider>
     );
+    
 };
 
 export const useAppContext = () => useContext(AppContext);
+
+export default AppProvider;

@@ -9,8 +9,9 @@ import { useAppContext } from '../context/AppContext.jsx';
 import toast from 'react-hot-toast';
 
 const Blog = () => {
+    const [userName] = useState(localStorage.getItem('userName') || 'Admin');
     const { id } = useParams();
-    const { axios } = useAppContext();
+    const { axios} = useAppContext();
     const [data, setData] = useState(null);
     const [comments, setComments] = useState([]);
     const [name, setName] = useState('');
@@ -88,7 +89,7 @@ const Blog = () => {
                     {data.subTitle}
                 </h1><br />
                 <p className='inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary'>
-                    Admin
+                    {data.author?.name || data.authorName || 'Admin'}
                 </p>
             </div>
 
@@ -117,7 +118,6 @@ const Blog = () => {
                         ))}
                     </div>
 
-                    {/* Add Comment Form */}
                     <div className='bg-gray-50 p-6 rounded-lg'>
                         <h4 className='font-semibold mb-4'>Leave a Comment</h4>
                         <form onSubmit={addComment} className='space-y-4'>
@@ -150,7 +150,6 @@ const Blog = () => {
                     </div>
                 </div>
 
-                {/* Share Buttons */}
                 <div className='my-14 max-w-3xl mx-auto text-center'>
                     <h3 className='font-semibold mb-4'>Share this article</h3>
                     <div className='flex justify-center gap-4'>
