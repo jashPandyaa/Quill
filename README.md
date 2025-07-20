@@ -1,4 +1,5 @@
 # ✍️ Quill - Where Words Find Wings
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) 
 
 A modern, AI-powered blogging platform that helps writers create, publish, and share their stories with the world. Deployed on Vercel: [https://quill-mu-one.vercel.app](https://quill-mu-one.vercel.app)
 
