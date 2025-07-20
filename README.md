@@ -1,7 +1,5 @@
 # ✍️ Quill - Where Words Find Wings
 
-![Quill Header](https://ik.imagekit.io/your-imagekit-id/quill-header.png)
-
 A modern, AI-powered blogging platform that helps writers create, publish, and share their stories with the world. Deployed on Vercel: [https://quill-mu-one.vercel.app](https://quill-mu-one.vercel.app)
 
 ## 🌟 Features
@@ -26,15 +24,6 @@ A modern, AI-powered blogging platform that helps writers create, publish, and s
 - Blog statistics
 - Draft management
 - Social sharing
-
-## 🖥️ Screenshots
-
-| Feature | Screenshot |
-|---------|------------|
-| **Homepage** | ![Home](https://ik.imagekit.io/your-imagekit-id/home.png) |
-| **Editor** | ![Editor](https://ik.imagekit.io/your-imagekit-id/editor.png) |
-| **Dashboard** | ![Dashboard](https://ik.imagekit.io/your-imagekit-id/dashboard.png) |
-| **Mobile View** | ![Mobile](https://ik.imagekit.io/your-imagekit-id/mobile.png) |
 
 ## 🛠️ Tech Stack
 
