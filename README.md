@@ -3,7 +3,7 @@
 **My Second Internship Project**  
 *Where 3AM coding sessions met AI-powered creativity*
 
-A modern, AI-powered blogging platform that helps writers create, publish, and share their stories with the world. Deployed on Vercel: [https://quill-mu-one.vercel.app](https://quill-mu-one.vercel.app)  
+A modern, AI-powered blogging platform that helps writers create, publish, and share their stories with the world.
 
 **Developer**: Jash Pandya  
 **Timeline**: 25th June - 16th July 2024 (22 intense days)  
